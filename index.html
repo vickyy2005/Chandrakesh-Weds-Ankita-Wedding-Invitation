@@ -110,7 +110,7 @@ body{
 
 
 
-    overflow-x:hidden;
+    overflow-x:clip;
 
 
 
@@ -6856,12 +6856,34 @@ setInterval(
     let virtualY = window.scrollY || 0;
     let autoStartTimer = null;
 
+    function getScrollY(){
+        return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    }
+
     function getMaxScroll(){
-        return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const docH = Math.max(
+            document.documentElement.scrollHeight || 0,
+            document.body ? document.body.scrollHeight : 0
+        );
+        return Math.max(0, docH - window.innerHeight);
+    }
+
+    function setNativeScrollInstant(on){
+        document.documentElement.style.scrollBehavior = on ? "auto" : "";
+    }
+
+    function jumpTo(y){
+        try{
+            window.scrollTo({ top: y, left: 0, behavior: "instant" });
+        }catch(err){
+            window.scrollTo(0, y);
+        }
     }
 
     function updateUI(){
-        const atBottom = (window.scrollY || 0) >= getMaxScroll() - 3 && getMaxScroll() > 0;
+        const curY = getScrollY();
+        const maxY = getMaxScroll();
+        const atBottom = curY >= maxY - 4 && maxY > 0;
         toggleBtn.setAttribute("aria-pressed", String(isScrolling));
         toggleBtn.classList.toggle("is-active", isScrolling);
 
@@ -6877,7 +6899,7 @@ setInterval(
         }
 
         if(topBtn){
-            topBtn.classList.toggle("is-shown", (window.scrollY || 0) > window.innerHeight * 0.45);
+            topBtn.classList.toggle("is-shown", curY > window.innerHeight * 0.45);
         }
     }
 
@@ -6890,6 +6912,7 @@ setInterval(
             userPaused = true;
         }
         isScrolling = false;
+        setNativeScrollInstant(false);
         if(rafId !== null){
             cancelAnimationFrame(rafId);
             rafId = null;
@@ -6907,13 +6930,16 @@ setInterval(
         const dt = Math.min(0.05, (ts - lastTs) / 1000);
         lastTs = ts;
 
-        const speed = window.innerWidth <= 700 ? 48 : 58;
+        const speed = window.innerWidth <= 700 ? 68 : 74;
         const maxY = getMaxScroll();
         virtualY = Math.min(maxY, virtualY + speed * dt);
 
-        window.scrollTo({ top: virtualY, behavior: "auto" });
+        const targetInt = Math.round(virtualY);
+        if(targetInt !== Math.round(getScrollY())){
+            jumpTo(targetInt);
+        }
 
-        if(virtualY >= maxY - 1){
+        if(virtualY >= maxY - 1 && getScrollY() >= maxY - 4){
             stopAutoScroll(false);
             return;
         }
@@ -6927,17 +6953,13 @@ setInterval(
             autoStartTimer = null;
         }
         userPaused = false;
+        setNativeScrollInstant(true);
 
-        if(fromTop){
-            window.scrollTo({ top: 0, behavior: "auto" });
+        if(fromTop || getScrollY() >= getMaxScroll() - 4){
+            jumpTo(0);
             virtualY = 0;
         }else{
-            virtualY = window.scrollY || 0;
-        }
-
-        if(virtualY >= getMaxScroll() - 3){
-            window.scrollTo({ top: 0, behavior: "auto" });
-            virtualY = 0;
+            virtualY = getScrollY();
         }
 
         isScrolling = true;
@@ -6950,7 +6972,7 @@ setInterval(
         if(isScrolling){
             stopAutoScroll(true);
         }else{
-            const atBottom = (window.scrollY || 0) >= getMaxScroll() - 3;
+            const atBottom = getScrollY() >= getMaxScroll() - 4;
             startAutoScroll(atBottom);
         }
     });
@@ -6958,6 +6980,7 @@ setInterval(
     if(topBtn){
         topBtn.addEventListener("click", function(){
             stopAutoScroll(true);
+            setNativeScrollInstant(false);
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
@@ -6968,11 +6991,11 @@ setInterval(
         }
     }, { passive:true });
 
-    window.addEventListener("touchstart", function(e){
+    window.addEventListener("touchmove", function(e){
         if(wrap.contains(e.target)){
             return;
         }
-        if(isScrolling || autoStartTimer){
+        if(isScrolling){
             stopAutoScroll(true);
         }
     }, { passive:true });
@@ -6981,7 +7004,7 @@ setInterval(
         if(wrap.contains(e.target)){
             return;
         }
-        if(isScrolling || autoStartTimer){
+        if(isScrolling){
             stopAutoScroll(true);
         }
     }, { passive:true });
@@ -6999,12 +7022,12 @@ setInterval(
         wrap.classList.add("is-visible");
         updateUI();
         const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if(!reducedMotion && !userPaused && !isScrolling && (window.scrollY || 0) < 30){
+        if(!reducedMotion && !userPaused && !isScrolling && getScrollY() < 30){
             autoStartTimer = setTimeout(function(){
                 if(!userPaused && !isScrolling){
                     startAutoScroll(false);
                 }
-            }, 3200);
+            }, 3000);
         }
     }
 
