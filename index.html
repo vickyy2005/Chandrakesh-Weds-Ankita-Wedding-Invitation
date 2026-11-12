@@ -145,7 +145,7 @@ body{
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    padding:clamp(14px, 2.5vh, 28px) 16px;
+    padding:clamp(10px, 2vh, 22px) 14px;
     background:radial-gradient(circle at center, #fdf4dd 0%, #f3dfb8 56%, #e2c08d 100%);
 }
 
@@ -173,51 +173,16 @@ body{
 
 .cover-image{
     display:block;
-    height:min(91vh, 880px);
+    height:min(94vh, 920px);
+    max-height:94svh;
     width:auto;
-    max-width:94vw;
+    max-width:96vw;
     object-fit:contain;
     border-radius:14px;
     box-shadow:
         0 24px 68px rgba(61, 36, 16, 0.28),
         0 0 0 1px rgba(164, 121, 42, 0.36);
     user-select:none;
-}
-
-.cover-scroll-cue{
-    position:absolute;
-    left:50%;
-    bottom:max(18px, env(safe-area-inset-bottom, 18px));
-    transform:translateX(-50%);
-    z-index:4;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:9px 18px;
-    border-radius:999px;
-    text-decoration:none;
-    background:linear-gradient(135deg, rgba(255, 252, 244, 0.68) 0%, rgba(255, 243, 214, 0.42) 100%);
-    -webkit-backdrop-filter:blur(12px) saturate(140%);
-    backdrop-filter:blur(12px) saturate(140%);
-    border:1px solid rgba(255, 250, 238, 0.78);
-    color:#2e1808;
-    font-family:'Cinzel', serif;
-    font-size:10.5px;
-    font-weight:700;
-    letter-spacing:.18em;
-    box-shadow:0 8px 24px rgba(45, 24, 8, 0.18);
-    transition:transform .25s ease, background .25s ease;
-    animation:coverCueFloat 2.4s ease-in-out infinite;
-}
-
-.cover-scroll-cue:hover{
-    background:linear-gradient(135deg, rgba(255, 252, 244, 0.85) 0%, rgba(255, 243, 214, 0.60) 100%);
-}
-
-.cover-scroll-cue svg{
-    width:13px;
-    height:13px;
-    color:var(--saffron);
 }
 
 @keyframes coverReveal{
@@ -227,49 +192,21 @@ body{
     }
 }
 
-@keyframes coverCueFloat{
-    0%, 100%{
-        transform:translateX(-50%) translateY(0);
-    }
-    50%{
-        transform:translateX(-50%) translateY(-4px);
-    }
-}
-
 @media(max-width:700px){
     .cover-page{
-        padding:10px 8px;
+        padding:8px 6px;
     }
     .cover-image{
         width:auto;
         height:auto;
         max-width:96vw;
-        max-height:92svh;
-        border-radius:10px;
-    }
-    .cover-scroll-cue{
-        bottom:max(14px, env(safe-area-inset-bottom, 14px));
-        left:14px;
-        transform:none;
-        padding:8px 14px;
-        font-size:9.5px;
-        letter-spacing:.14em;
-        animation:coverCueFloatMobile 2.4s ease-in-out infinite;
-    }
-}
-
-@keyframes coverCueFloatMobile{
-    0%, 100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-4px);
+        max-height:96svh;
+        border-radius:12px;
     }
 }
 
 @media(prefers-reduced-motion:reduce){
-    .cover-frame,
-    .cover-scroll-cue{
+    .cover-frame{
         animation:none !important;
         opacity:1 !important;
         transform:none !important;
@@ -4491,6 +4428,7 @@ body{
 }
 
 .auto-scroll-btn,
+.music-btn,
 .scroll-top-btn{
     display:inline-flex;
     align-items:center;
@@ -4519,6 +4457,7 @@ body{
 }
 
 .auto-scroll-btn:hover,
+.music-btn:hover,
 .scroll-top-btn:hover{
     transform:translateY(-2px);
     box-shadow:
@@ -4529,6 +4468,33 @@ body{
 
 .auto-scroll-btn.is-active{
     border-color:rgba(181, 90, 31, 0.55);
+}
+
+.music-btn{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    padding:0;
+    color:var(--saffron);
+}
+
+.music-btn svg{
+    width:16px;
+    height:16px;
+    display:block;
+}
+
+.music-btn.is-playing{
+    border-color:rgba(181, 90, 31, 0.55);
+}
+
+.music-btn.is-playing svg{
+    animation:musicPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes musicPulse{
+    0%, 100%{ transform:scale(1); }
+    50%{ transform:scale(1.12); }
 }
 
 .auto-scroll-icon{
@@ -4567,15 +4533,21 @@ body{
     .auto-scroll-wrap{
         right:12px;
         bottom:max(14px, env(safe-area-inset-bottom, 14px));
+        gap:6px;
     }
     .auto-scroll-btn{
         padding:9px 13px;
         font-size:10px;
         letter-spacing:.13em;
     }
+    .music-btn,
     .scroll-top-btn{
         width:35px;
         height:35px;
+    }
+    .music-btn svg{
+        width:14px;
+        height:14px;
     }
 }
 
@@ -4610,13 +4582,6 @@ body{
             alt="Chandrakesh weds Ankita - 11 December 2026"
         >
     </div>
-
-    <a href="#hero" class="cover-scroll-cue" aria-label="Scroll to open invitation">
-        <span>OPEN INVITATION</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
-        </svg>
-    </a>
 
 </section>
 
@@ -5459,7 +5424,20 @@ body{
 
 
 
-<div class="auto-scroll-wrap" id="autoScrollWrap" aria-label="Auto scroll controls">
+<audio id="bgMusic" preload="auto" loop playsinline>
+    <source src="wedding-music.wav?v=4" type="audio/wav">
+</audio>
+
+<div class="auto-scroll-wrap" id="autoScrollWrap" aria-label="Invitation controls">
+    <button type="button" class="music-btn" id="musicToggle" aria-label="Play background music" title="Play background music" aria-pressed="false">
+        <span id="musicIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+        </span>
+    </button>
     <button type="button" class="auto-scroll-btn" id="autoScrollToggle" aria-pressed="false">
         <span class="auto-scroll-icon" id="autoScrollIcon" aria-hidden="true"></span>
         <span id="autoScrollLabel">AUTO SCROLL</span>
@@ -7075,6 +7053,140 @@ setInterval(
     }
 
     updateUI();
+})();
+
+/* =====================================================
+   BACKGROUND WEDDING MUSIC
+===================================================== */
+(function initBgMusic(){
+    const audio = document.getElementById("bgMusic");
+    const toggleBtn = document.getElementById("musicToggle");
+    const iconEl = document.getElementById("musicIcon");
+
+    if(!audio || !toggleBtn || !iconEl){
+        return;
+    }
+
+    const PLAYING_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>';
+    const MUTED_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>';
+
+    const TARGET_VOL = 0.50;
+    let fadeTimer = null;
+    let userMuted = false;
+
+    function fadeTo(target, onDone){
+        if(fadeTimer){
+            clearInterval(fadeTimer);
+            fadeTimer = null;
+        }
+        fadeTimer = setInterval(function(){
+            const cur = audio.volume;
+            const diff = target - cur;
+            if(Math.abs(diff) < 0.04){
+                audio.volume = target;
+                clearInterval(fadeTimer);
+                fadeTimer = null;
+                if(typeof onDone === "function"){
+                    onDone();
+                }
+            }else{
+                audio.volume = Math.max(0, Math.min(1, cur + Math.sign(diff) * 0.04));
+            }
+        }, 50);
+    }
+
+    function updateMusicUI(isPlaying){
+        toggleBtn.setAttribute("aria-pressed", String(isPlaying));
+        toggleBtn.classList.toggle("is-playing", isPlaying);
+        toggleBtn.setAttribute("title", isPlaying ? "Mute background music" : "Play background music");
+        toggleBtn.setAttribute("aria-label", isPlaying ? "Mute background music" : "Play background music");
+        iconEl.innerHTML = isPlaying ? PLAYING_SVG : MUTED_SVG;
+    }
+
+    function playSoftly(){
+        if(userMuted){
+            return;
+        }
+        audio.volume = 0;
+        const p = audio.play();
+        if(p && typeof p.then === "function"){
+            p.then(function(){
+                updateMusicUI(true);
+                fadeTo(TARGET_VOL);
+                detachUnlock();
+            }).catch(function(){
+                updateMusicUI(false);
+            });
+        }else{
+            updateMusicUI(true);
+            fadeTo(TARGET_VOL);
+            detachUnlock();
+        }
+    }
+
+    function pauseSoftly(){
+        fadeTo(0, function(){
+            audio.pause();
+            updateMusicUI(false);
+        });
+    }
+
+    function toggleMusic(){
+        if(audio.paused || audio.volume === 0){
+            userMuted = false;
+            playSoftly();
+        }else{
+            userMuted = true;
+            pauseSoftly();
+        }
+    }
+
+    toggleBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        toggleMusic();
+    });
+
+    const unlockEvents = ["pointerdown", "touchstart", "click", "keydown", "wheel"];
+    function onFirstUserGesture(){
+        detachUnlock();
+        if(!userMuted && audio.paused){
+            playSoftly();
+        }
+    }
+
+    function attachUnlock(){
+        unlockEvents.forEach(function(ev){
+            window.addEventListener(ev, onFirstUserGesture, { passive:true, once:true });
+        });
+    }
+
+    function detachUnlock(){
+        unlockEvents.forEach(function(ev){
+            window.removeEventListener(ev, onFirstUserGesture);
+        });
+    }
+
+    audio.volume = 0;
+    const directPlay = audio.play();
+    if(directPlay && typeof directPlay.then === "function"){
+        directPlay.then(function(){
+            updateMusicUI(true);
+            fadeTo(TARGET_VOL);
+        }).catch(function(){
+            updateMusicUI(false);
+            attachUnlock();
+        });
+    }else{
+        attachUnlock();
+    }
+
+    window.addEventListener("invitationReady", function(){
+        if(!userMuted && audio.paused){
+            playSoftly();
+        }
+    });
+
+    updateMusicUI(false);
 })();
 
 </script>
