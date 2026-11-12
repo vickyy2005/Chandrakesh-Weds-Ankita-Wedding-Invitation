@@ -132,156 +132,147 @@ body{
 
 /* =====================================================
 
-   LOADER — FULL-SCREEN ROYAL CREST INTRO
+   COVER PAGE
 
 ===================================================== */
 
-#loader{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100dvh;
-    z-index:99999;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:
-        radial-gradient(circle at 22% 20%, rgba(11, 44, 72, 0.94), transparent 56%),
-        radial-gradient(circle at 82% 85%, rgba(44, 12, 22, 0.90), transparent 54%),
-        radial-gradient(circle at 50% 50%, #0a2d2f 0%, #071928 58%, #040b14 100%);
-    transition:
-        opacity 1.05s cubic-bezier(.4, 0, .2, 1),
-        transform 1.15s cubic-bezier(.22, .61, .36, 1),
-        visibility 1.05s ease;
-    cursor:pointer;
-}
-
-#loader.hide{
-    opacity:0;
-    transform:scale(1.04);
-    visibility:hidden;
-    pointer-events:none;
-}
-
-.loader-stage{
+.cover-page{
     position:relative;
     width:100%;
-    height:100%;
+    min-height:100vh;
+    min-height:100svh;
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
+    padding:clamp(14px, 2.5vh, 28px) 16px;
+    background:radial-gradient(circle at center, #fdf4dd 0%, #f3dfb8 56%, #e2c08d 100%);
 }
 
-.loader-halo{
+.cover-backdrop{
     position:absolute;
-    width:min(78vw, 76dvh);
-    height:min(78vw, 76dvh);
-    border-radius:50%;
-    border:1px solid rgba(226, 184, 102, 0.24);
-    box-shadow:
-        0 0 80px rgba(218, 168, 76, 0.16),
-        inset 0 0 60px rgba(218, 168, 76, 0.08);
-    opacity:0;
-    transform:scale(0.82);
+    inset:-4%;
+    z-index:0;
+    background:url("cover-page.jpg") center center / cover no-repeat;
+    filter:blur(22px) saturate(1.08) brightness(1.04);
+    opacity:.52;
+    transform:scale(1.08);
     pointer-events:none;
-    animation:loaderHaloExpand 2.3s cubic-bezier(.22, .61, .36, 1) forwards;
 }
 
-.loader-logo-wrap{
+.cover-frame{
     position:relative;
-    width:min(94vw, 92dvh);
-    height:min(94vw, 92dvh);
+    z-index:2;
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
-    -webkit-mask-image:radial-gradient(circle at center, #000 58%, rgba(0, 0, 0, 0.85) 72%, transparent 97%);
-    mask-image:radial-gradient(circle at center, #000 58%, rgba(0, 0, 0, 0.85) 72%, transparent 97%);
     opacity:0;
-    transform:scale(0.88);
-    filter:blur(4px) brightness(0.82);
-    will-change:transform, opacity, filter;
-    animation:logoCrestReveal 1.35s cubic-bezier(.2, .72, .25, 1) .08s forwards;
+    transform:scale(0.96);
+    animation:coverReveal 1.2s cubic-bezier(.22,.61,.36,1) .08s forwards;
 }
 
-.loader-logo{
-    width:100%;
-    height:100%;
-    object-fit:contain;
+.cover-image{
     display:block;
+    height:min(91vh, 880px);
+    width:auto;
+    max-width:94vw;
+    object-fit:contain;
+    border-radius:14px;
+    box-shadow:
+        0 24px 68px rgba(61, 36, 16, 0.28),
+        0 0 0 1px rgba(164, 121, 42, 0.36);
     user-select:none;
-    pointer-events:none;
 }
 
-.loader-sheen{
+.cover-scroll-cue{
     position:absolute;
-    inset:-15%;
-    pointer-events:none;
-    background:
-        linear-gradient(
-            115deg,
-            transparent 34%,
-            rgba(255, 236, 184, 0.22) 48%,
-            rgba(255, 248, 224, 0.34) 50%,
-            rgba(255, 236, 184, 0.18) 53%,
-            transparent 66%
-        );
-    transform:translateX(-115%);
-    animation:logoSheenSweep 1.65s cubic-bezier(.35, 0, .25, 1) .45s forwards;
+    left:50%;
+    bottom:max(18px, env(safe-area-inset-bottom, 18px));
+    transform:translateX(-50%);
+    z-index:4;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 18px;
+    border-radius:999px;
+    text-decoration:none;
+    background:linear-gradient(135deg, rgba(255, 252, 244, 0.68) 0%, rgba(255, 243, 214, 0.42) 100%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
+    backdrop-filter:blur(12px) saturate(140%);
+    border:1px solid rgba(255, 250, 238, 0.78);
+    color:#2e1808;
+    font-family:'Cinzel', serif;
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.18em;
+    box-shadow:0 8px 24px rgba(45, 24, 8, 0.18);
+    transition:transform .25s ease, background .25s ease;
+    animation:coverCueFloat 2.4s ease-in-out infinite;
 }
 
-@keyframes logoCrestReveal{
-    0%{
-        opacity:0;
-        transform:scale(0.88);
-        filter:blur(4px) brightness(0.82);
-    }
-    70%{
-        opacity:1;
-        transform:scale(1.012);
-        filter:blur(0) brightness(1.06);
-    }
-    100%{
+.cover-scroll-cue:hover{
+    background:linear-gradient(135deg, rgba(255, 252, 244, 0.85) 0%, rgba(255, 243, 214, 0.60) 100%);
+}
+
+.cover-scroll-cue svg{
+    width:13px;
+    height:13px;
+    color:var(--saffron);
+}
+
+@keyframes coverReveal{
+    to{
         opacity:1;
         transform:scale(1);
-        filter:blur(0) brightness(1.02);
     }
 }
 
-@keyframes loaderHaloExpand{
-    0%{
-        opacity:0;
-        transform:scale(0.82);
+@keyframes coverCueFloat{
+    0%, 100%{
+        transform:translateX(-50%) translateY(0);
     }
-    40%{
-        opacity:0.75;
-    }
-    100%{
-        opacity:0.25;
-        transform:scale(1.16);
+    50%{
+        transform:translateX(-50%) translateY(-4px);
     }
 }
 
-@keyframes logoSheenSweep{
-    0%{
-        transform:translateX(-115%);
+@media(max-width:700px){
+    .cover-page{
+        padding:10px 8px;
     }
-    100%{
-        transform:translateX(115%);
+    .cover-image{
+        width:auto;
+        height:auto;
+        max-width:96vw;
+        max-height:92svh;
+        border-radius:10px;
+    }
+    .cover-scroll-cue{
+        bottom:max(14px, env(safe-area-inset-bottom, 14px));
+        left:14px;
+        transform:none;
+        padding:8px 14px;
+        font-size:9.5px;
+        letter-spacing:.14em;
+        animation:coverCueFloatMobile 2.4s ease-in-out infinite;
+    }
+}
+
+@keyframes coverCueFloatMobile{
+    0%, 100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-4px);
     }
 }
 
 @media(prefers-reduced-motion:reduce){
-    .loader-halo,
-    .loader-logo-wrap,
-    .loader-sheen{
+    .cover-frame,
+    .cover-scroll-cue{
         animation:none !important;
-    }
-    .loader-logo-wrap{
         opacity:1 !important;
         transform:none !important;
-        filter:none !important;
     }
 }
 
@@ -3333,29 +3324,22 @@ body{
 .countdown-content{
     position:relative;
     z-index:10;
-    width:min(760px, 92vw);
-    margin-top:clamp(125px, 21vh, 200px);
+    width:min(820px, 92vw);
+    margin-top:clamp(115px, 18vh, 178px);
     padding-bottom:40px;
     transform:translateY(0);
 }
 
 /* =====================================================
-   RSVP
+   RSVP & CONTACT
 ===================================================== */
 
 .rsvp{
-    max-width:440px;
-    margin:0 auto 38px;
-    padding:24px 30px 22px;
-    background:linear-gradient(135deg, rgba(255, 252, 244, 0.38) 0%, rgba(255, 244, 218, 0.18) 100%);
-    -webkit-backdrop-filter:blur(18px) saturate(145%);
-    backdrop-filter:blur(18px) saturate(145%);
-    border:1px solid rgba(255, 250, 238, 0.62);
-    border-radius:20px;
-    box-shadow:
-        0 16px 40px rgba(45, 24, 8, 0.20),
-        inset 0 1px 1px rgba(255, 255, 255, 0.78),
-        inset 0 -1px 1px rgba(164, 121, 42, 0.22);
+    display:grid;
+    grid-template-columns:1.15fr 0.95fr;
+    gap:18px;
+    max-width:740px;
+    margin:0 auto 30px;
     opacity:0;
     transform:translateY(40px);
     transition:opacity 1s ease, transform 1s ease;
@@ -3366,34 +3350,52 @@ body{
     transform:translateY(0);
 }
 
+.rsvp-card,
+.contact-card{
+    padding:22px 24px 20px;
+    background:linear-gradient(135deg, rgba(255, 252, 244, 0.38) 0%, rgba(255, 244, 218, 0.18) 100%);
+    -webkit-backdrop-filter:blur(18px) saturate(145%);
+    backdrop-filter:blur(18px) saturate(145%);
+    border:1px solid rgba(255, 250, 238, 0.62);
+    border-radius:20px;
+    box-shadow:
+        0 16px 40px rgba(45, 24, 8, 0.20),
+        inset 0 1px 1px rgba(255, 255, 255, 0.78),
+        inset 0 -1px 1px rgba(164, 121, 42, 0.22);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
 .rsvp-title{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:14px;
+    gap:12px;
     font-family:'Cinzel', serif;
-    font-size:24px;
+    font-size:21px;
     font-weight:700;
-    letter-spacing:.26em;
+    letter-spacing:.24em;
     color:#2e1808;
     text-shadow:0 1px 10px rgba(255, 250, 238, 0.85);
-    margin-bottom:12px;
+    margin-bottom:10px;
 }
 
 .rsvp-title::before,
 .rsvp-title::after{
     content:"";
-    width:38px;
+    width:30px;
     height:1px;
     background:linear-gradient(90deg, transparent, rgba(138, 96, 26, 0.85), transparent);
 }
 
 .rsvp-names{
     font-family:'Cinzel', serif;
-    font-size:18px;
+    font-size:15.5px;
     font-weight:700;
-    line-height:1.6;
-    letter-spacing:.1em;
+    line-height:1.75;
+    letter-spacing:.08em;
     color:#2e1808;
     text-shadow:0 1px 8px rgba(255, 250, 238, 0.85);
 }
@@ -3401,16 +3403,26 @@ body{
 .rsvp-address{
     font-family:'Cormorant Garamond', Georgia, serif;
     font-style:italic;
-    font-size:16px;
+    font-size:15px;
     font-weight:700;
     line-height:1.5;
     color:#5d3d12;
     text-shadow:0 1px 8px rgba(255, 250, 238, 0.85);
-    margin-top:4px;
+    margin-top:6px;
+}
+
+.contact-name{
+    font-family:'Cinzel', serif;
+    font-size:17px;
+    font-weight:700;
+    line-height:1.5;
+    letter-spacing:.09em;
+    color:#2e1808;
+    text-shadow:0 1px 8px rgba(255, 250, 238, 0.85);
 }
 
 .rsvp-phone{
-    margin-top:14px;
+    margin-top:12px;
 }
 
 .rsvp-phone-link{
@@ -4169,32 +4181,48 @@ body{
 
 
     .countdown-content{
-        margin-top:clamp(140px, 24svh, 195px) !important;
+        margin-top:clamp(108px, 18svh, 155px) !important;
         transform:translateY(0) !important;
     }
 
     .rsvp{
-        margin-bottom:28px !important;
-        padding:18px 20px !important;
+        grid-template-columns:1fr;
+        gap:12px;
+        margin-bottom:20px !important;
+    }
+
+    .rsvp-card,
+    .contact-card{
+        padding:15px 18px !important;
+        border-radius:16px;
     }
 
     .rsvp-title{
-        font-size:20px !important;
-        margin-bottom:8px !important;
+        font-size:17px !important;
+        letter-spacing:.22em !important;
+        margin-bottom:7px !important;
     }
 
     .rsvp-names{
-        font-size:15px !important;
-        line-height:1.5 !important;
+        font-size:13.5px !important;
+        line-height:1.6 !important;
+    }
+
+    .contact-name{
+        font-size:14.5px !important;
     }
 
     .rsvp-address{
-        font-size:13px !important;
+        font-size:12.5px !important;
+    }
+
+    .rsvp-phone{
+        margin-top:8px !important;
     }
 
     .rsvp-phone-link{
-        font-size:13.5px !important;
-        padding:8px 16px !important;
+        font-size:13px !important;
+        padding:7px 16px !important;
     }
 
     .countdown-title{
@@ -4567,33 +4595,30 @@ body{
 
 <!-- =====================================================
 
-     LOADER
+     COVER PAGE
 
 ===================================================== -->
 
+<section class="cover-page" id="coverPage">
 
+    <div class="cover-backdrop" aria-hidden="true"></div>
 
-<div id="loader">
-
-    <div class="loader-stage">
-
-        <div class="loader-halo" aria-hidden="true"></div>
-
-        <div class="loader-logo-wrap">
-
-            <img
-                src="logo.png.png"
-                class="loader-logo"
-                alt="Chandrakesh & Ankita"
-            >
-
-            <div class="loader-sheen" aria-hidden="true"></div>
-
-        </div>
-
+    <div class="cover-frame">
+        <img
+            src="cover-page.jpg"
+            class="cover-image"
+            alt="Chandrakesh weds Ankita - 11 December 2026"
+        >
     </div>
 
-</div>
+    <a href="#hero" class="cover-scroll-cue" aria-label="Scroll to open invitation">
+        <span>OPEN INVITATION</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+        </svg>
+    </a>
+
+</section>
 
 
 
@@ -5199,48 +5224,44 @@ body{
 
         <div class="rsvp">
 
+            <div class="rsvp-card">
 
+                <div class="rsvp-title">
+                    RSVP
+                </div>
 
+                <div class="rsvp-names">
+                    Lallan Singh<br>
+                    Vidhyashankar Singh<br>
+                    Harikesh Singh
+                </div>
 
-
-            <div class="rsvp-title">
-
-                RSVP
+                <div class="rsvp-address">
+                    Sengar Family
+                </div>
 
             </div>
 
+            <div class="contact-card">
 
+                <div class="rsvp-title">
+                    CONTACT
+                </div>
 
+                <div class="contact-name">
+                    Chandrakesh Singh
+                </div>
 
+                <div class="rsvp-phone">
+                    <a href="tel:8791153451" class="rsvp-phone-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#8b5a19" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        8791153451
+                    </a>
+                </div>
 
-            <div class="rsvp-names">
-                Chandrakesh Singh
             </div>
-
-
-
-
-
-            <div class="rsvp-address">
-                Sengar Family
-            </div>
-
-
-
-
-
-            <div class="rsvp-phone">
-                <a href="tel:8791153451" class="rsvp-phone-link">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#8b5a19" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
-                    8791153451
-                </a>
-            </div>
-
-
-
-
 
         </div>
 
@@ -5465,40 +5486,47 @@ body{
 
 
 /* =====================================================
-   LOADER & HERO ENTRANCE
+   COVER PAGE & HERO ENTRANCE
 ===================================================== */
+
+let invitationReadySent = false;
+
+function markInvitationReady(){
+    if(!invitationReadySent){
+        invitationReadySent = true;
+        window.dispatchEvent(new CustomEvent("invitationReady"));
+    }
+}
 
 function activateHero(){
     const hero = document.getElementById("hero");
     if(hero && !hero.classList.contains("hero-ready")){
         hero.classList.add("hero-ready");
-        window.dispatchEvent(new CustomEvent("invitationReady"));
     }
 }
 
-function dismissLoader(){
-    const loader = document.getElementById("loader");
-    if(loader && !loader.classList.contains("hide")){
-        loader.classList.add("hide");
+(function initHeroReveal(){
+    const hero = document.getElementById("hero");
+    if(!hero){
+        return;
     }
-    activateHero();
-}
-
-(function initLoader(){
-    const loader = document.getElementById("loader");
-    if(loader){
-        loader.addEventListener("click", dismissLoader);
+    if("IntersectionObserver" in window){
+        const heroObs = new IntersectionObserver(function(entries){
+            entries.forEach(function(entry){
+                if(entry.isIntersecting){
+                    activateHero();
+                    heroObs.disconnect();
+                }
+            });
+        }, { threshold:0.18 });
+        heroObs.observe(hero);
+    }else{
+        activateHero();
     }
 })();
 
-window.addEventListener(
-    "load",
-    function(){
-        setTimeout(dismissLoader, 1950);
-    }
-);
-
-setTimeout(dismissLoader, 3200);
+window.addEventListener("load", markInvitationReady);
+setTimeout(markInvitationReady, 500);
 
 /* =====================================================
    HERO FLOATING GOLDEN PARTICLES & SUBTLE PARALLAX
@@ -7040,7 +7068,7 @@ setInterval(
     }
 
     const hero = document.getElementById("hero");
-    if(hero && hero.classList.contains("hero-ready")){
+    if(invitationReadySent || (hero && hero.classList.contains("hero-ready"))){
         showAndMaybeStart();
     }else{
         window.addEventListener("invitationReady", showAndMaybeStart, { once:true });
