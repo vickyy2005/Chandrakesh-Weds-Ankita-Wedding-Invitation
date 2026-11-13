@@ -4713,84 +4713,6 @@ body{
 
 <!-- =====================================================
 
-     OUR STORY
-
-===================================================== -->
-
-
-
-<section class="story">
-
-
-
-
-
-    <div class="story-overlay"></div>
-
-
-
-
-
-    <div class="story-heading">
-
-
-
-        <span>
-
-            OUR STORY, OUR JOURNEY,
-
-        </span>
-
-
-
-        <strong>
-
-            OURS FOREVER
-
-        </strong>
-
-
-
-    </div>
-
-
-
-
-
-  
-
-
-
-
-
-    <!-- WELCOME BOARD -->
-
-
-
-    <img
-
-        src="welcome-board-everlasting.png"
-
-        class="welcome-board"
-
-        id="welcomeBoard"
-
-        alt="Welcome To Our Wedding"
-
-    >
-
-
-
-
-
-</section>
-
-
-
-
-
-<!-- =====================================================
-
      WEDDING CELEBRATIONS
 
 ===================================================== -->
@@ -6409,10 +6331,6 @@ const animatedElements =
 
             ".moments-heading",
 
-            ".story-heading",
-
-            ".welcome-board",
-
             ".schedule-heading",
 
             ".schedule-card",
@@ -6945,7 +6863,7 @@ setInterval(
         const dt = Math.min(0.05, (ts - lastTs) / 1000);
         lastTs = ts;
 
-        const speed = window.innerWidth <= 700 ? 68 : 74;
+        const speed = window.innerWidth <= 700 ? 94 : 106;
         const maxY = getMaxScroll();
         virtualY = Math.min(maxY, virtualY + speed * dt);
 
